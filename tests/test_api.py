@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock, patch
 
+import openai
 import pytest
 from fastapi.testclient import TestClient
 
@@ -71,9 +72,39 @@ class TestAnalyze:
         assert response.status_code == 422
 
     @patch("app.ai.OpenAI")
-    def test_analyze_returns_502_on_openai_failure(self, mock_openai_cls):
+    def test_analyze_returns_502_on_openai_api_error(self, mock_openai_cls):
         mock_client = MagicMock()
-        mock_client.chat.completions.create.side_effect = Exception("upstream error")
+        mock_client.chat.completions.create.side_effect = openai.APIConnectionError(request=MagicMock())
+        mock_openai_cls.return_value = mock_client
+
+        response = client.post("/api/analyze", json={"description": "Some issue."})
+        assert response.status_code == 502
+
+    @patch("app.ai.OpenAI")
+    def test_analyze_returns_502_on_none_content(self, mock_openai_cls):
+        mock_message = MagicMock()
+        mock_message.content = None
+        mock_choice = MagicMock()
+        mock_choice.message = mock_message
+        mock_completion = MagicMock()
+        mock_completion.choices = [mock_choice]
+        mock_client = MagicMock()
+        mock_client.chat.completions.create.return_value = mock_completion
+        mock_openai_cls.return_value = mock_client
+
+        response = client.post("/api/analyze", json={"description": "Some issue."})
+        assert response.status_code == 502
+
+    @patch("app.ai.OpenAI")
+    def test_analyze_returns_502_on_invalid_json(self, mock_openai_cls):
+        mock_message = MagicMock()
+        mock_message.content = "not valid json {{{"
+        mock_choice = MagicMock()
+        mock_choice.message = mock_message
+        mock_completion = MagicMock()
+        mock_completion.choices = [mock_choice]
+        mock_client = MagicMock()
+        mock_client.chat.completions.create.return_value = mock_completion
         mock_openai_cls.return_value = mock_client
 
         response = client.post("/api/analyze", json={"description": "Some issue."})

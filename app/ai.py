@@ -46,5 +46,11 @@ def analyze_issue(description: str) -> AnalyzeResponse:
         ],
     )
 
-    data = json.loads(response.choices[0].message.content)
+    content = response.choices[0].message.content
+    if content is None:
+        raise ValueError("OpenAI returned an empty response")
+    try:
+        data = json.loads(content)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"OpenAI returned invalid JSON: {exc}") from exc
     return AnalyzeResponse(**data)

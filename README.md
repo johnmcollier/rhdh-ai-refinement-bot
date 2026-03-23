@@ -1,6 +1,6 @@
 # rhdh-ai-refinement-bot
 
-A web service that accepts a Jira issue description and uses the OpenAI API to return a story point estimate (Fibonacci scale), a person-days range, a priority recommendation, and a written justification — providing additional input during team refinement sessions.
+A web service that accepts a Jira issue description and uses the OpenAI API to return a story point estimate (in person-days), a priority recommendation, and a written justification — providing additional input during team refinement sessions.
 
 ## Requirements
 
@@ -42,12 +42,13 @@ Returns `{"status": "ok"}`.
 **Response:**
 ```json
 {
-  "fibonacci": 5,
-  "person_days": "2-3",
+  "story_points": 3,
   "priority": "normal",
   "justification": "..."
 }
 ```
+
+`story_points` is a number representing estimated person-days (e.g. 0.5, 1, 2, 3, 5, 8, 13).
 
 Priority values: `blocker` | `critical` | `major` | `normal` | `minor`
 
