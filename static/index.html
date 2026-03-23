@@ -94,20 +94,13 @@
     <div id="results" class="hidden fade-in space-y-4">
 
       <!-- Metrics row -->
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-2 gap-4">
 
-        <!-- Fibonacci -->
+        <!-- Story Points -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col items-center gap-1">
           <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Story Points</span>
-          <span id="res-fibonacci" class="text-5xl font-bold text-brand-500 leading-none mt-1"></span>
-          <span class="text-xs text-slate-400">Fibonacci</span>
-        </div>
-
-        <!-- Person days -->
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col items-center gap-1">
-          <span class="text-xs font-medium text-slate-500 uppercase tracking-wide">Person Days</span>
-          <span id="res-person-days" class="text-3xl font-bold text-slate-700 leading-none mt-1"></span>
-          <span class="text-xs text-slate-400">estimated</span>
+          <span id="res-story-points" class="text-5xl font-bold text-brand-500 leading-none mt-1"></span>
+          <span class="text-xs text-slate-400">person days</span>
         </div>
 
         <!-- Priority -->
@@ -182,8 +175,7 @@
     function renderResults(data) {
       hideError();
 
-      document.getElementById('res-fibonacci').textContent   = data.fibonacci;
-      document.getElementById('res-person-days').textContent = data.person_days;
+      document.getElementById('res-story-points').textContent = data.story_points;
       document.getElementById('res-justification').textContent = data.justification;
 
       const badge = document.getElementById('res-priority-badge');

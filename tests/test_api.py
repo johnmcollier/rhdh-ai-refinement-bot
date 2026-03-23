@@ -8,8 +8,7 @@ from app.main import app
 client = TestClient(app)
 
 MOCK_RESPONSE = {
-    "fibonacci": 5,
-    "person_days": "2-3",
+    "story_points": 3,
     "priority": "normal",
     "justification": "This is a medium-complexity feature with clear requirements and no major unknowns.",
 }
@@ -49,8 +48,7 @@ class TestAnalyze:
 
         assert response.status_code == 200
         body = response.json()
-        assert body["fibonacci"] == 5
-        assert body["person_days"] == "2-3"
+        assert body["story_points"] == 3
         assert body["priority"] == "normal"
         assert "justification" in body
 

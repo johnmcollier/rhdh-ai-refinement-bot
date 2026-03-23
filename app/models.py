@@ -15,7 +15,6 @@ class AnalyzeRequest(BaseModel):
 
 
 class AnalyzeResponse(BaseModel):
-    fibonacci: int
-    person_days: str
+    story_points: float
     priority: Literal["blocker", "critical", "major", "normal", "minor"]
     justification: str
