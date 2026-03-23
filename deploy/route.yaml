@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: refinement-bot
+  labels:
+    app: refinement-bot
+spec:
+  # host is intentionally omitted — OpenShift will assign a hostname automatically
+  to:
+    kind: Service
+    name: refinement-bot
+  port:
+    targetPort: 8000
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

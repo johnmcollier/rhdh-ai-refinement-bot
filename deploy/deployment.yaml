@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: refinement-bot
+  labels:
+    app: refinement-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: refinement-bot
+  template:
+    metadata:
+      labels:
+        app: refinement-bot
+    spec:
+      containers:
+        - name: refinement-bot
+          # Replace with the actual image reference after pushing to your registry
+          image: refinement-bot:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          env:
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: refinement-bot-secret
+                  key: openai_api_key
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi

@@ -57,3 +57,16 @@ Priority values: `blocker` | `critical` | `major` | `normal` | `minor`
 ```bash
 pytest
 ```
+
+## Container
+
+Build and run with Podman (or Docker):
+
+```bash
+podman build -t refinement-bot:latest .
+podman run --rm -p 8000:8000 -e OPENAI_API_KEY=<your-key> refinement-bot:latest
+```
+
+## OpenShift deployment
+
+See [`deploy/README.md`](deploy/README.md) for instructions on applying the OpenShift manifests (Deployment, Service, Route) and configuring the required Secret.
